@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     # Own Apps
     'accounts.apps.AccountsConfig',
-    'core.apps.CoreConfig'
+    'core.apps.CoreConfig',
+    'center.apps.CenterConfig'
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
