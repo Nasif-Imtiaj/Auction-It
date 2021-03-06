@@ -27,16 +27,7 @@ class AboutTemplateView(TemplateView):
         return context
 
 
-class OnAuctionTemplateView(TemplateView):
-    template_name = 'core/on_auction.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'on_auction_nav': 'active',
-            'items': Item.objects.all()
-        })
-        return context
 
 
 class ItemCreateView(CreateView):
