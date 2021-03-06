@@ -2,10 +2,11 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, CreateView
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from register.forms import forms, RegisterForm
 
-from register.forms import forms
+
 # Create your views here.
-
 
 
 class RegisterCreateView(CreateView):
@@ -13,6 +14,15 @@ class RegisterCreateView(CreateView):
     template_name = 'register/register.html'
     success_url = '/'
 
+
 def register(response):
-    form = UserCreationForm()
-    return render(response, "register/register.html",{"form":form})
+    if response.method == "POST":
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+
+        return redirect("/")
+    else:
+        form = RegisterForm()
+
+    return render(response, "register/register.html", {"form": form})
