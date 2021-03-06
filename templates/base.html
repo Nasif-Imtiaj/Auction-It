@@ -30,19 +30,26 @@
             <a class="nav-link" href="{% url 'center:create_product' %}">Post Add</a>
           </li>
 
-            <div>
-                {% if user.is_authenticated %}
-                   {{request.user.username}}
+
+
+        </ul>
+      </div>
+      <div >
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                 <div class="dropdown" >
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       {{request.user.username}}
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="/logout"> Logout</a>
+                      </div>
+                </div>
                 {% else %}
                    <p>Login <a href="/login"> Here</a> </p>
                 {% endif %}
-
-   </div>
-
-            
         </ul>
-      </div>
-
+    </div>
     </nav>
 
 
