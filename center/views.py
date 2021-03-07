@@ -39,5 +39,10 @@ class AuctionTableCreateView(CreateView):
 
 class AuctionTableUpdateView(UpdateView):
     form_class = AuctionTableForm
-    template_name = 'center/create_product.html'
+    model = auction_table
+    template_name = 'center/update_product.html'
     success_url = '/'
+
+    def test_func(self):
+        post = self.get_object()
+
