@@ -23,12 +23,14 @@
           <li class="nav-item {{ about_nav }}">
             <a class="nav-link" href="{% url 'core:about' %}">About</a>
           </li>
-            <li class="nav-item {{ on_auction_nav }}">
-            <a class="nav-link" href="{% url 'center:on_auction' %}">On Auction</a>
-          </li>
-            <li class="nav-item {{ create_product_nav }}">
-            <a class="nav-link" href="{% url 'center:create_product' %}">Post Add</a>
-          </li>
+            {% if user.is_authenticated %}
+                <li class="nav-item {{ on_auction_nav }}">
+                <a class="nav-link" href="{% url 'center:on_auction' %}">On Auction</a>
+              </li>
+                <li class="nav-item {{ create_product_nav }}">
+                <a class="nav-link" href="{% url 'center:create_product' %}">Post Add</a>
+              </li>
+            {% endif %}
 
 
 
@@ -42,8 +44,10 @@
                        {{request.user.username}}
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a href="/logout"> Logout</a>
-                        <a href="/status"> Status</a>
+
+                        <a class="dropdown-item" href="/profile"> Profile</a>
+                        <a class="dropdown-item" href="/status">Status</a>
+                        <a class="dropdown-item" href="/logout"> Logout</a>
                       </div>
                 </div>
                 {% else %}

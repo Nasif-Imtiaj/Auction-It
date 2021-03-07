@@ -1,5 +1,5 @@
-from django.views.generic import TemplateView, CreateView , UpdateView, DetailView
-
+from django.views.generic import TemplateView, CreateView , UpdateView, DetailView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from core.forms import AuctionTableForm
 from core.models import auction_table
@@ -25,7 +25,7 @@ class AuctionTableDetailView(DetailView):
 
 
 
-class AuctionTableCreateView(CreateView):
+class AuctionTableCreateView(LoginRequiredMixin, CreateView):
     form_class = AuctionTableForm
     template_name = 'center/create_product.html'
     success_url = '/'
@@ -40,12 +40,28 @@ class AuctionTableCreateView(CreateView):
         print("Here")
         return super().form_invalid(form)
 
-class AuctionTableUpdateView(UpdateView):
+class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = AuctionTableForm
     model = auction_table
     template_name = 'center/update_product.html'
     success_url = '/'
 
-    def test_func(self):
-        post = self.get_object()
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
+    def test_func(self):
+        item = self.get_object()
+        if self.request.user.username == item.owner_name:
+            return True
+        return False
+
+class AuctionTableDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = auction_table
+    success_url = '/'
+    template_name = 'center/product_confirm_delete.html'
+    def test_func(self):
+        item = self.get_object()
+        if self.request.user.username == item.owner_name:
+            return True
+        return False

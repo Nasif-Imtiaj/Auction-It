@@ -24,7 +24,9 @@
                           <td>{{ item.item_name }}</td>
                           <td>{{ item.category }}</td>
                           <td>{{ item.timestamp }}</td>
-                          <td><a href="{% url 'center:detail_product' item.id %}" > click</a></td>
+                          <td> <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'center:update_product' item.id %}">Update</a>
+                          / <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'center:product_confirm_delete' item.id %}">Delete</a>
+                          </td>
                         </tr>
                         {%  endif %}
                     {% endfor %}
