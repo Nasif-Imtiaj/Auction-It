@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView , UpdateView, DetailView
 
 from core.forms import ItemForm
 from core.models import Item
@@ -20,6 +20,12 @@ class OnAuctionTemplateView(TemplateView):
         })
         return context
 
+class AuctionTableDetailView(DetailView):
+    template_name = 'center/detail_product.html'
+    model = auction_table
+
+
+
 class AuctionTableCreateView(CreateView):
     form_class = AuctionTableForm
     template_name = 'center/create_product.html'
@@ -30,3 +36,8 @@ class AuctionTableCreateView(CreateView):
             'create_product_nav': 'active',
         })
         return context
+
+class AuctionTableUpdateView(UpdateView):
+    form_class = AuctionTableForm
+    template_name = 'center/create_product.html'
+    success_url = '/'

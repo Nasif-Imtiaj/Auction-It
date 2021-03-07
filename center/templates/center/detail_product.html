@@ -1,6 +1,5 @@
 {% extends 'center/base.html' %}
-
-    {% block content %}
+{% block content %}
         <table class="table table-hover table-dark">
             <thead>
                     <tr>
@@ -9,21 +8,19 @@
                             <th scope="col">Product Name</th>
                             <th scope="col">Product Category</th>
                             <th scope="col">Date & time</th>
-                            <th scope="col">View</th>
+
                     </tr>
             </thead>
         <tbody>
 
-            {% for item in items %}
                         <tr>
-                          <td>{{ item.id }}</td>
-                          <td>{{ item.owner_name }}</td>
-                          <td>{{ item.item_name }}</td>
-                          <td>{{ item.category }}</td>
-                          <td>{{ item.timestamp }}</td>
-                          <td><a href="{% url 'center:detail_product' item.id %}" > click</a></td>
+                          <td>{{ object.id }}</td>
+                          <td>{{ object.owner_name }}</td>
+                          <td>{{ object.item_name }}</td>
+                          <td>{{ object.category }}</td>
+                          <td>{{ object.timestamp }}</td>
+
                         </tr>
-              {% endfor %}
 
           </tbody>
         </table>
