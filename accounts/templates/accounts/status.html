@@ -1,0 +1,36 @@
+{% extends 'accounts/base.html' %}
+
+{% block content %}
+   <table class="table table-hover table-dark">
+            <thead>
+                    <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Owner Name</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Product Category</th>
+                            <th scope="col">Date & time</th>
+                            <th scope="col">Action</th>
+
+                    </tr>
+            </thead>
+        <tbody>
+
+                        {% for item in items %}
+                        {% if user.username == item.owner_name %}
+
+                        <tr>
+                          <td>{{ item.id }}</td>
+                          <td>{{ item.owner_name }}</td>
+                          <td>{{ item.item_name }}</td>
+                          <td>{{ item.category }}</td>
+                          <td>{{ item.timestamp }}</td>
+                          <td><a href="{% url 'center:detail_product' item.id %}" > click</a></td>
+                        </tr>
+                        {%  endif %}
+                    {% endfor %}
+
+          </tbody>
+        </table>
+
+
+{% endblock %}

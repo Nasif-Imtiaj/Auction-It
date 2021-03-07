@@ -1,7 +1,6 @@
 from django.views.generic import TemplateView, CreateView , UpdateView, DetailView
 
-from core.forms import ItemForm
-from core.models import Item
+
 from core.forms import AuctionTableForm
 from core.models import auction_table
 
@@ -36,6 +35,10 @@ class AuctionTableCreateView(CreateView):
             'create_product_nav': 'active',
         })
         return context
+
+    def form_invalid(self, form):
+        print("Here")
+        return super().form_invalid(form)
 
 class AuctionTableUpdateView(UpdateView):
     form_class = AuctionTableForm
