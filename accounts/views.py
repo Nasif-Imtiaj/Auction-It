@@ -14,6 +14,3 @@ class StatusTemplateView(TemplateView):
             'items': auction_table.objects.all()
         })
         return context
-
-class ProfileTemplateView(TemplateView):
-    template_name = 'accounts/profile.html'

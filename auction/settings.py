@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'core.apps.CoreConfig',
     'center.apps.CenterConfig',
-    'register.apps.RegisterConfig',
     'users.apps.UsersConfig'
 ]
 
@@ -134,5 +133,5 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = 'core:home'
+LOGIN_URL = 'login'
