@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView, CreateView , UpdateView, DetailView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
-from core.forms import AuctionTableForm
-from core.models import auction_table
+from core.forms import AuctionTableForm, AuctionItemForm
+from core.models import auction_table, AuctionItem
 
 # Create your views here.
 class HomeTemplateView(TemplateView):
@@ -15,18 +15,18 @@ class OnAuctionTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'on_auction_nav': 'active',
-            'items': auction_table.objects.all()
+            'items': AuctionItem.objects.all()
         })
         return context
 
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
-    model = auction_table
+    model = AuctionItem
 
 
 
 class AuctionTableCreateView(LoginRequiredMixin, CreateView):
-    form_class = AuctionTableForm
+    form_class = AuctionItemForm
     template_name = 'center/create_product.html'
     success_url = '/'
     def get_context_data(self, **kwargs):
@@ -41,7 +41,7 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    form_class = AuctionTableForm
+    form_class = AuctionItemForm
     model = auction_table
     template_name = 'center/update_product.html'
     success_url = '/'

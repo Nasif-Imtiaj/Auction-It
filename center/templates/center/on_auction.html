@@ -3,14 +3,16 @@
     {% block content %}
 
         {% for item in items %}
-            <article class="media content-section">
-              <div class="media-body">
-                <div class="article-metadata">
-                  <a class="mr-2" href="#">{{ item.owner_name }}</a>
-                  <small class="text-muted">{{ item.timestamp }}</small>
+
+             <article class="media content-section">
+             <img  src="{{ item.owner.profile.image.url }}" class="rounded-circle article-img">
+            <div class="media-body">
+            <div class="article-metadata">
+                  <a class="mr-2" href="#">{{ item.owner }}</a>
+                  <small class="text-muted">{{ item.date_posted }}</small>
                 </div>
                 <h2><a class="article-title" href="#">{{ item.category }}</a></h2>
-                <p class="article-content">{{ item.item_name }}</p>
+                <p class="article-content">{{ item.name }}</p>
                   <a href="{% url 'center:detail_product' item.id %}" > click</a>
               </div>
         </article>

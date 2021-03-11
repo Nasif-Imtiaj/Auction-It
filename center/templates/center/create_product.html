@@ -5,11 +5,11 @@
         <div class="card-body">
             <form method="POST">
                 {% csrf_token %}
-
-
+                {{form}}
+<!--
                 <div class="form-group">
                 <label >Owner name</label>
-                <input name="owner_name" type="text" value="{{user.username}}" disabled>
+                <input name="owner_name" type="text" value="{{user.username}}" >
             </div>
                 <div class="form-group">
                 <label >Product name</label>
@@ -20,7 +20,7 @@
                   <option value="1">Car</option>
                   <option value="2">Mobile phones</option>
                   <option value="3">Furniture</option>
-                </select>
+                </select>-->
 
                 <button class="btn btn-primary" type="'submit"> Add </button>
             </form>
