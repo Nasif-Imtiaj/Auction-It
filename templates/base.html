@@ -26,7 +26,7 @@
           </li>
             {% if user.is_authenticated %}
                 <li class="nav-item {{ on_auction_nav }}">
-                <a class="nav-link" href="{% url 'center:on_auction' %}">On Auction</a>
+                <a class="nav-link" href="{% url 'center:on_auction' %}">Auction Arena</a>
               </li>
                 <li class="nav-item {{ create_product_nav }}">
                 <a class="nav-link" href="{% url 'center:create_product' %}">Post Add</a>
@@ -74,17 +74,16 @@
         <div class="col-md-8">
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Our Sidebar</h3>
-            <p class='text-muted'>You can put any information here you'd like.
+        <div class="col-md-3" >
+          <div class="content-section"algin="right">
+            <h6 align="center">User Panel</h6>
+
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light">Latest Posts</li>
-                <li class="list-group-item list-group-item-light">Announcements</li>
-                <li class="list-group-item list-group-item-light">Calendars</li>
-                <li class="list-group-item list-group-item-light">etc</li>
+                <li class="list-group-item list-group-item-light"><a href="/profile"> Profile</a></li>
+                <li class="list-group-item list-group-item-light"> <a  href="{% url 'center:my_items' %}">My Items on Auction</a></li>
+                <li class="list-group-item list-group-item-light"><a  href="#"> My Bets</a></li>
               </ul>
-            </p>
+
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 
     {% block content %}
 
+  <h6 class="mb-6">My Items - {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h6>
         {% for item in items %}
 
              <article class="media content-section">

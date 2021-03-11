@@ -29,3 +29,6 @@ class AuctionItem(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
 
+    def get_absolutre_url(self):
+        return reverse('', kwargs={'pk': self.pk})
+

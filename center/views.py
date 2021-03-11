@@ -1,23 +1,45 @@
-from django.views.generic import TemplateView, CreateView , UpdateView, DetailView, DeleteView
+from django.views.generic import TemplateView, CreateView , UpdateView, DetailView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-
+from django.shortcuts import render, get_object_or_404
 from core.forms import AuctionTableForm, AuctionItemForm
-from core.models import auction_table, AuctionItem
-
+from core.models import auction_table, AuctionItem, Category
+from django.contrib.auth.models import User
 # Create your views here.
 class HomeTemplateView(TemplateView):
     template_name = 'center/home.html'
 
-class OnAuctionTemplateView(TemplateView):
+class OnAuctionListView(ListView):
     template_name = 'center/on_auction.html'
-
+    model = AuctionItem
+    context_object_name = 'items'
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'on_auction_nav': 'active',
-            'items': AuctionItem.objects.all()
+            'on_auction_nav': 'active'
+
         })
         return context
+    ordering = ['-date_posted']
+    paginate_by = 5
+
+class UserItemsListView(ListView):
+    template_name = 'center/my_items.html'
+    model = AuctionItem
+    context_object_name = 'items'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'on_auction_nav': 'active'
+
+        })
+        return context
+    ordering = ['-date_posted']
+    paginate_by = 5
+
+    def get_queryset(self):
+        return AuctionItem.objects.filter(owner=self.request.user)
+
+
 
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
@@ -33,6 +55,7 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'create_product_nav': 'active',
+            'categorys': Category.objects.all()
         })
         return context
 
