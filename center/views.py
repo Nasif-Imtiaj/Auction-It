@@ -22,24 +22,6 @@ class OnAuctionListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 5
 
-class UserItemsListView(ListView):
-    template_name = 'center/my_items.html'
-    model = AuctionItem
-    context_object_name = 'items'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'on_auction_nav': 'active'
-
-        })
-        return context
-    ordering = ['-date_posted']
-    paginate_by = 5
-
-    def get_queryset(self):
-        return AuctionItem.objects.filter(owner=self.request.user)
-
-
 
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
@@ -48,7 +30,7 @@ class AuctionTableDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'create_product_nav': 'active',
+
             'bets': Bets.objects.filter(item=self.object.id)
         })
         return context
@@ -71,6 +53,8 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
         print("Here")
         return super().form_invalid(form)
 
+
+
 class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = AuctionItemForm
     model = auction_table
@@ -87,6 +71,8 @@ class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
             return True
         return False
 
+
+
 class AuctionTableDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = auction_table
     success_url = '/'
@@ -96,6 +82,8 @@ class AuctionTableDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView
         if self.request.user.username == item.owner_name:
             return True
         return False
+
+
 
 
 class BettersCreateView(LoginRequiredMixin, CreateView):
@@ -109,4 +97,42 @@ class BettersCreateView(LoginRequiredMixin, CreateView):
 
         })
         return context
+
+
+
+
+class UserItemsListView(ListView):
+    template_name = 'center/my_items.html'
+    model = AuctionItem
+    context_object_name = 'items'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'on_auction_nav': 'active'
+
+        })
+        return context
+    ordering = ['-date_posted']
+    paginate_by = 5
+
+    def get_queryset(self):
+        return AuctionItem.objects.filter(owner=self.request.user)
+
+class UserBetsListView(ListView):
+    template_name = 'center/my_bets.html'
+    model = Bets
+    context_object_name = 'bets'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+
+        'bets': Bets.objects.filter(better=self.request.user)
+
+        })
+        return context
+    ordering = ['-betted_time']
+    paginate_by = 5
+
+
+
 
