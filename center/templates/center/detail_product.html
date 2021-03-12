@@ -16,16 +16,29 @@
 
                         <tr>
                           <td>{{ object.id }}</td>
-                          <td>{{ object.owner_name }}</td>
-                          <td>{{ object.item_name }}</td>
+                          <td>{{ object.owner }}</td>
+                          <td>{{ object.name }}</td>
                           <td>{{ object.category }}</td>
-                          <td>{{ object.timestamp }}</td>
+                          <td>{{ object.date_posted }}</td>
 
 
                         </tr>
 
           </tbody>
         </table>
- <a class="nav-link" href="{% url 'center:betters' %}">Bet</a>
+        <a class="nav-link" href="{% url 'center:betters' %}">Bet</a>
 
+        {% for bet in bets %}
+            <article class="media content-section">
+                <img  src="{{ bet.better.profile.image.url }}" class="rounded-circle article-img">
+                <div class="media-body">
+                     <div class="article-metadata">
+                  <a class="mr-2" href="#">{{ bet.better }}</a>
+                     <small class="text-muted">{{ bet.betted_time }}</small>
+                </div>
+               <h2><a class="article-title" href="#">{{ bet.category }}</a></h2>
+                <p class="article-content">Bet Amount : {{ bet.amount }}</p>
+                </div>
+            </article>
+        {% endfor %}
     {% endblock %}
