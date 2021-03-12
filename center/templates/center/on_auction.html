@@ -8,7 +8,7 @@
              <img  src="{{ item.owner.profile.image.url }}" class="rounded-circle article-img">
             <div class="media-body">
             <div class="article-metadata">
-                  <a class="mr-2" href="#">{{ item.owner }}</a>
+                  <a class="mr-2" href="{% url 'center:user_profile' item.owner.id %}">{{ item.owner }}</a>
                   <small class="text-muted">{{ item.date_posted }}</small>
                 </div>
                 <h2><a class="article-title" href="#">{{ item.category }}</a></h2>

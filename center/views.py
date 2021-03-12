@@ -135,4 +135,6 @@ class UserBetsListView(ListView):
 
 
 
-
+class PofileDetailView(DetailView):
+    template_name = 'center/user_profile.html'
+    model = User
