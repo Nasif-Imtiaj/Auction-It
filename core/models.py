@@ -31,4 +31,16 @@ class AuctionItem(models.Model):
 
     def get_absolutre_url(self):
         return reverse('', kwargs={'pk': self.pk})
+    def __str__(self):
+        return self.name
 
+
+
+class Bets(models.Model):
+    item = models.ForeignKey(AuctionItem,on_delete=models.CASCADE)
+    better = models.ForeignKey(User, on_delete=models.CASCADE)
+    amount = models.IntegerField()
+    betted_time = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = ('item', 'better')

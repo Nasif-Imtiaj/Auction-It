@@ -1,6 +1,6 @@
 from django import forms
 
-from core.models import Item, auction_table, Category, AuctionItem
+from core.models import Item, auction_table, Category, AuctionItem, Bets
 
 
 class ItemForm(forms.ModelForm):
@@ -17,3 +17,8 @@ class AuctionItemForm(forms.ModelForm):
     class Meta:
         model = AuctionItem
         fields = ['owner', 'name', 'category']
+
+class BettersForm(forms.ModelForm):
+    class Meta:
+        model = Bets
+        fields = ['item', 'better', 'amount']

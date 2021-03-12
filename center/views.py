@@ -1,8 +1,8 @@
 from django.views.generic import TemplateView, CreateView , UpdateView, DetailView, DeleteView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404
-from core.forms import AuctionTableForm, AuctionItemForm
-from core.models import auction_table, AuctionItem, Category
+from core.forms import AuctionTableForm, AuctionItemForm, BettersForm
+from core.models import auction_table, AuctionItem, Category, Bets
 from django.contrib.auth.models import User
 # Create your views here.
 class HomeTemplateView(TemplateView):
@@ -88,3 +88,17 @@ class AuctionTableDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView
         if self.request.user.username == item.owner_name:
             return True
         return False
+
+
+class BettersCreateView(LoginRequiredMixin, CreateView):
+    form_class = BettersForm
+    template_name = 'center/betters.html'
+    success_url = '/'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'create_product_nav': 'active',
+
+        })
+        return context
+
