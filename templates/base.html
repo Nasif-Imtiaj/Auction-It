@@ -71,16 +71,16 @@
     {% endif%}
 <main role="main" class="container">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-10">
           {% block content %}{% endblock %}
         </div>
-        <div class="col-md-3" >
+        <div class="col-md-2" >
           <div class="content-section"algin="right">
             <h6 align="center">User Panel</h6>
 
               <ul class="list-group">
                 <li class="list-group-item list-group-item-light"><a href="/profile"> Profile</a></li>
-                <li class="list-group-item list-group-item-light"> <a  href="{% url 'center:my_items' %}">My Items on Auction</a></li>
+                <li class="list-group-item list-group-item-light"> <a  href="{% url 'center:my_items' %}">My Auctions</a></li>
                 <li class="list-group-item list-group-item-light"><a  href="{% url 'center:my_bets' %}"> My Bets</a></li>
               </ul>
 
