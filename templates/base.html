@@ -45,9 +45,6 @@
                        {{user.profile.update_last_active}}
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                        <a class="dropdown-item" href="/profile"> Profile</a>
-                        <a class="dropdown-item" href="/status">Status</a>
                         <a class="dropdown-item" href="/logout"> Logout</a>
                       </div>
                 </div>
@@ -79,9 +76,9 @@
             <h6 align="center">User Panel</h6>
 
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light"><a href="/user.profile"> Profile</a></li>
+               <small> <li class="list-group-item list-group-item-light"> <a class="mr-2" href="{% url 'center:user_profile' user.id %}"> Profile</a></li>
                 <li class="list-group-item list-group-item-light"> <a  href="{% url 'center:my_items' %}">My Auctions</a></li>
-                <li class="list-group-item list-group-item-light"><a  href="{% url 'center:my_bets' %}"> My Bets</a></li>
+                <li class="list-group-item list-group-item-light"><a  href="{% url 'center:my_bets' %}"> My Bets</a></li></small>
               </ul>
 
           </div>
