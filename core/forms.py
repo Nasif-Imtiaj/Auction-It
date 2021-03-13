@@ -13,12 +13,16 @@ class AuctionTableForm(forms.ModelForm):
         model = auction_table
         fields = ['owner_name', 'item_name', 'category']
 
+
 class AuctionItemForm(forms.ModelForm):
     class Meta:
         model = AuctionItem
         fields = ['owner', 'name', 'category']
 
+
+
+
 class BettersForm(forms.ModelForm):
     class Meta:
         model = Bets
-        fields = ['item', 'better', 'amount']
+        fields = ['amount']

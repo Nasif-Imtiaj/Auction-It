@@ -42,7 +42,7 @@
             {% if user.is_authenticated %}
                  <div class="dropdown" >
                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                       {{request.user.username}}
+                       {{user.profile.update_last_active}}
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
@@ -79,7 +79,7 @@
             <h6 align="center">User Panel</h6>
 
               <ul class="list-group">
-                <li class="list-group-item list-group-item-light"><a href="/profile"> Profile</a></li>
+                <li class="list-group-item list-group-item-light"><a href="/user.profile"> Profile</a></li>
                 <li class="list-group-item list-group-item-light"> <a  href="{% url 'center:my_items' %}">My Auctions</a></li>
                 <li class="list-group-item list-group-item-light"><a  href="{% url 'center:my_bets' %}"> My Bets</a></li>
               </ul>

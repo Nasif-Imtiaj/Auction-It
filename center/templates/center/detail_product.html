@@ -26,7 +26,7 @@
 
           </tbody>
         </table>
-        <a class="nav-link" href="{% url 'center:betters' %}">Bet</a>
+        <a class="nav-link" href="{% url 'center:betters' object.id %}">Bet</a>
 
         {% for bet in bets %}
             <article class="media content-section">
@@ -39,6 +39,11 @@
                <h2><a class="article-title" href="#">{{ bet.category }}</a></h2>
                 <p class="article-content">Bet Amount : {{ bet.amount }}</p>
                 </div>
+                {% if bet.is_accepted %}
+                    <h2> Accepted </h2>
+                {% else %}
+                    <h2><a class="article-title" href="{% url 'center:accept_deal' object.id bet.id %}">Accept</a></h2>
+                {% endif %}
             </article>
         {% endfor %}
     {% endblock %}

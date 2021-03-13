@@ -40,7 +40,19 @@ class Bets(models.Model):
     item = models.ForeignKey(AuctionItem,on_delete=models.CASCADE)
     better = models.ForeignKey(User, on_delete=models.CASCADE)
     amount = models.IntegerField()
+    is_accepted = models.BooleanField(default=False)
     betted_time = models.DateTimeField(default=timezone.now)
+    accepted_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         unique_together = ('item', 'better')
+        verbose_name = 'Bet'
+        verbose_name_plural = 'Bets'
+
+
+"""
+items = self.request.user.auction_item_set.all()
+Bets.objects.filter(item__in=items, is_accepted=True)
+Bets.objects.filter(item=self.request.user, is_accepted=True)
+self.request.user.bets_set.filter(is_accepted=True)
+"""

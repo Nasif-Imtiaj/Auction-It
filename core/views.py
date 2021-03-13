@@ -1,7 +1,16 @@
+from django.utils import timezone
 from django.views.generic import TemplateView, CreateView
 
 from core.forms import ItemForm
 from core.models import Item
+
+
+class UpdateActiveTimeMixin:
+    def get(self, request, *args, **kwargs):
+        if request.user:
+            request.user.profile.last_active = timezone.now()
+            request.user.profile.save()
+        return super().get(request, *args, **kwargs)
 
 
 class HomeTemplateView(TemplateView):
@@ -11,7 +20,6 @@ class HomeTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'home_nav': 'active'
-
         })
         return context
 

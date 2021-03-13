@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from core.models import Item
-from core.models import auction_table, AuctionItem, Category
+from core.models import auction_table, AuctionItem, Category, Bets
 
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
@@ -18,3 +18,7 @@ class AuctionItemAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'timestamp']
+
+@admin.register(Bets)
+class ItemAdmin(admin.ModelAdmin):
+    pass
