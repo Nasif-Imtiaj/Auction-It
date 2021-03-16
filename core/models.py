@@ -3,6 +3,7 @@ from django.urls import reverse
 from datetime import datetime, date
 from django.utils import timezone
 from django.contrib.auth.models import User
+from PIL import Image
 class Item(models.Model):
     name = models.CharField(max_length=50)
     section = models.CharField(max_length=20)
@@ -23,12 +24,23 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+class Location(models.Model):
+    title = models.CharField(max_length=50)
+    timestamp =  models.DateTimeField(default=datetime.now, blank=True)
+
+    def __str__(self):
+        return self.title
+
 class AuctionItem(models.Model):
     name = models.CharField(max_length=50)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
     is_sold = models.BooleanField(default=False)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    color = models.CharField(max_length=50)
+    model = models.CharField(max_length=50)
+    description = models.TextField()
 
 
     def get_absolutre_url(self):
@@ -42,6 +54,13 @@ class Images(models.Model):
 
     def __str__(self):
         return self.item.name + " Img"
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        img = Image.open(self.image.path)
+        output_size = (200, 200)
+        img.thumbnail(output_size)
+        img.save(self.image.path)
 
 
 class Bets(models.Model):

@@ -1,62 +1,95 @@
 {% extends 'center/base.html' %}
 {% block content %}
-                <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
-                        <!--Indicators-->
-                        <ol class="carousel-indicators">
-                        {% for p in photos %}
-                          <li data-target="#carousel-example-1z" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
-                        {% endfor %}
-                        </ol>
-                        <!--/.Indicators-->
-                        <!--Slides-->
-                        <div class="carousel-inner" role="listbox">
-                          {% for p in photos %}
-                          <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
-                            <img class="d-block w-70" src="{{p.image.url}}" alt="First slide">
+
+        {% if object.is_sold %}
+            <h2 align="center">The product has been sold</h2>
+                <p align="center">The auction has ended</p>
+        {% else %}
+            <div class="row">
+                 <div class="col-md-6">
+                 <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="width: 200px ">
+                            <!--Indicators-->
+                            <ol class="carousel-indicators">
+                            {% for p in photos %}
+                              <li data-target="#carousel-example-1z" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
+                            {% endfor %}
+                            </ol>
+                            <!--/.Indicators-->
+                            <!--Slides-->
+                            <div class="carousel-inner" role="listbox">
+                              {% for p in photos %}
+                              <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                                <img class="d-block w-100" src="{{p.image.url}}"
+                                  alt="First slide">
+                              </div>
+                              {% endfor %}
+                              <!--/First slide-->
+                            <!--/.Slides-->
+                            <!--Controls-->
+                            <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                            <!--/.Controls-->
                           </div>
-                          {% endfor %}
-                          <!--/First slide-->
-                        <!--/.Slides-->
-                        <!--Controls-->
-                        <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
-                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
-                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                        <!--/.Controls-->
-                      </div>
+                              </div>
+                 </div>
+                        <div class="col-md-6">
+                              <h5>{{object.name}}</h5>
+                              <p class="mb-2 text-muted text-uppercase small">{{object.category}}</p>
+                              <div class="table-responsive">
+                                <table class="table table-sm table-borderless mb-0">
+                                  <tbody>
+                                    <tr>
+                                      <th class="pl-0 w-25" scope="row"><strong>Description</strong></th>
+                                      <td><p class="pt-1">{{object.description}}</p></td>
+                                    </tr>
+                                    <tr>
+                                      <th class="pl-0 w-25" scope="row"><strong>Model</strong></th>
+                                      <td>{{object.model}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="pl-0 w-25" scope="row"><strong>Color</strong></th>
+                                      <td>{{object.color}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="pl-0 w-25" scope="row"><strong>Location</strong></th>
+                                      <td>{{object.location}}, Bangladesh</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                        </div>
+            </div>
+                <hr>
+            <a  href="{% url 'center:add_pic' object.id %}">Add Pic</a>
+            <a  href="{% url 'center:betters' object.id %}">Bet</a>
 
-                {% if object.is_sold %}
-                    <h2 align="center">The product has been sold</h2>
-                        <p align="center">The auction has ended</p>
-                {% else %}
-                    <a class="nav-link" href="{% url 'center:add_pic' object.id %}">Add Pic</a>
-                    <a class="nav-link" href="{% url 'center:betters' object.id %}">Bet</a>
-
-                    {% for bet in bets %}
-                        <article class="media content-section">
-                            <img  src="{{ bet.better.profile.image.url }}" class="rounded-circle article-img">
-                            <div class="media-body">
-                                 <div class="article-metadata">
-                              <a class="mr-2" href="#">{{ bet.better }}</a>
-                                 <small class="text-muted">{{ bet.betted_time }}</small>
-                            </div>
-                           <h2><a class="article-title" href="#">{{ bet.category }}</a></h2>
-                            <p class="article-content">Bet Amount : {{ bet.amount }}</p>
-                            </div>
+            {% for bet in bets %}
+                <article class="media content-section">
+                    <img  src="{{ bet.better.profile.image.url }}" class="rounded-circle article-img">
+                    <div class="media-body">
+                         <div class="article-metadata">
+                      <a class="mr-2" href="#">{{ bet.better }}</a>
+                         <small class="text-muted">{{ bet.betted_time }}</small>
+                    </div>
+                   <h2><a class="article-title" href="#">{{ bet.category }}</a></h2>
+                    <p class="article-content">Bet Amount : {{ bet.amount }}</p>
+                    </div>
 
 
-                            {% if bet.is_accepted %}
-                                <h2> Accepted </h2>
-                            {% else %}
-                                <h2><a class="article-title" href="{% url 'center:accept_deal' object.id bet.id %}">Accept</a></h2>
-                            {% endif %}
-                        </article>
-                    {% endfor %}
-                 {% endif %}
+                    {% if bet.is_accepted %}
+                        <h2> Accepted </h2>
+                    {% else %}
+                        <h2><a class="article-title" href="{% url 'center:accept_deal' object.id bet.id %}">Accept</a></h2>
+                    {% endif %}
+                </article>
+            {% endfor %}
+         {% endif %}
 
 
 
@@ -64,6 +97,8 @@
  {% endblock %}
 
     {% block extra_body %}
-
+<script>
+    $('.carousel').carousel()
+</script>
 
     {% endblock %}

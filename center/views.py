@@ -52,23 +52,20 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
     success_url = '/'
     initial = {'key': 'value'}
     form_class = AuctionItemForm
-    form_class2 = ImageForm
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(initial=self.initial)
-        form2 = self.form_class2(initial=self.initial)
-        return render(request, self.template_name, {'form': form,'form2': form2})
+        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
-        form2 = self.form_class2(request.POST,request.FILES)
-        if form.is_valid() and form2.is_valid():
+        if form.is_valid():
             # <process form cleaned data>
             form.save()
-            form2.save()
+
             return HttpResponseRedirect('/success/')
 
-        return render(request, self.template_name, {'form': form,'form2':form2})
+        return render(request, self.template_name, {'form': form})
 
 
 

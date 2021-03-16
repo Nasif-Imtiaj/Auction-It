@@ -18,7 +18,7 @@ class AuctionTableForm(forms.ModelForm):
 class AuctionItemForm(forms.ModelForm):
     class Meta:
         model = AuctionItem
-        fields = ['owner', 'name', 'category']
+        fields = ['owner', 'name', 'category', 'location', 'color', 'model', 'description']
 
 def get_image_filename(instance, filename):
     title = instance.post.title
