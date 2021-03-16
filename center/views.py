@@ -1,11 +1,16 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.forms import modelformset_factory
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
 from django.urls import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView, CreateView , \
     UpdateView, DetailView, DeleteView, ListView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render, get_object_or_404
-from core.forms import AuctionTableForm, AuctionItemForm, BettersForm
-from core.models import auction_table, AuctionItem, Category, Bets
+from django.shortcuts import render, get_object_or_404, redirect
+from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm
+from core.models import auction_table, AuctionItem, Category, Bets, Images
 from django.contrib.auth.models import User
 # Create your views here.
 class HomeTemplateView(TemplateView):
@@ -14,14 +19,17 @@ class HomeTemplateView(TemplateView):
 class OnAuctionListView(ListView):
     template_name = 'center/on_auction.html'
     model = AuctionItem
+
     context_object_name = 'items'
     def get_context_data(self, **kwargs):
+
         context = super().get_context_data(**kwargs)
         context.update({
-            'on_auction_nav': 'active'
-
+            'on_auction_nav': 'active',
         })
         return context
+
+
     ordering = ['-date_posted']
     paginate_by = 5
 
@@ -33,32 +41,41 @@ class AuctionTableDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-
+            'photos' : Images.objects.all(),
             'bets': Bets.objects.filter(item=self.object.id)
         })
         return context
 
 
-
 class AuctionTableCreateView(LoginRequiredMixin, CreateView):
-    form_class = AuctionItemForm
     template_name = 'center/create_product.html'
     success_url = '/'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'create_product_nav': 'active',
-            'categorys': Category.objects.all()
-        })
-        return context
+    initial = {'key': 'value'}
+    form_class = AuctionItemForm
+    form_class2 = ImageForm
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        form2 = self.form_class2(initial=self.initial)
+        return render(request, self.template_name, {'form': form,'form2': form2})
 
-    def form_invalid(self, form):
-        print(form.errors)
-        return super().form_invalid(form)
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        form2 = self.form_class2(request.POST,request.FILES)
+        if form.is_valid() and form2.is_valid():
+            # <process form cleaned data>
+            form.save()
+            form2.save()
+            return HttpResponseRedirect('/success/')
+
+        return render(request, self.template_name, {'form': form,'form2':form2})
+
+
+
+
+
+
+
 
 
 
@@ -111,6 +128,29 @@ class BettersCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
+class AddPicCreateView(LoginRequiredMixin, CreateView):
+    form_class = ImageForm
+    template_name = 'center/add_pic.html'
+    success_url = '/'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+
+        })
+        return context
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect(self.success_url)
+        else:
+            return render(request, self.template_name, {'form': form})
 
 
 
@@ -175,4 +215,7 @@ class AcceptDealDetailView(RedirectView):
         bet.is_accepted = True
         bet.accepted_time = timezone.now()
         bet.save()
+        item = AuctionItem.objects.get(id=self.kwargs.get('pk'))
+        item.is_sold = True
+        item.save()
 

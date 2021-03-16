@@ -82,26 +82,22 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
-#text-container
-{
 
-width: 400px;
-Display: block;
-Float: left;
+
+h1{
+color: red;
+}
+h4 {
+    display:inline;
+}
+h4:after {
+    content:"\a";
+    white-space: pre;
 }
 
-#text-left
-{
-Width: 200px;
-Text-align: left;
-Float: left;
-Display: block;
+#left{
+     float:left;
 }
-
-#text-right
-{
-Width: 200px;
-Text-align: right;
-Float: left;
-Display: block;
+#right{
+     float:right;
 }

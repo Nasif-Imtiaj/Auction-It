@@ -28,12 +28,20 @@ class AuctionItem(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_posted = models.DateTimeField(default=timezone.now)
+    is_sold = models.BooleanField(default=False)
+
 
     def get_absolutre_url(self):
         return reverse('', kwargs={'pk': self.pk})
     def __str__(self):
         return self.name
 
+class Images(models.Model):
+    item = models.ForeignKey(AuctionItem,on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='auction_item_pics')
+
+    def __str__(self):
+        return self.item.name + " Img"
 
 
 class Bets(models.Model):

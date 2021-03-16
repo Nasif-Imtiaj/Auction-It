@@ -4,16 +4,34 @@
 
         {% for item in items %}
 
-             <article class="media content-section">
-             <img  src="{{ item.owner.profile.image.url }}" class="rounded-circle article-img">
-            <div class="media-body">
-            <div class="article-metadata">
+
+
+            <div class="media-body" align="center" bor>
+
+            <div class="card text-white bg-dark col-sm-6 mb-4" >
+                  <div class="card h-100">
+                    <div class="card-body">
+                        <div class="card-header">
+                    <img  src="{{ item.owner.profile.image.url }}" class="rounded-circle article-img">
                   <a class="mr-2" href="{% url 'center:user_profile' item.owner.id %}">{{ item.owner }}</a>
                   <small class="text-muted">{{ item.date_posted }}</small>
-                </div>
-                <h2><a class="article-title" href="#">{{ item.category }}</a></h2>
-                <p class="article-content">{{ item.name }}</p>
-                <h1 align="right">
+                    </div>
+
+
+
+                        <span id="left" class="text-muted"><small >Product name</small></span>
+                        <span id="right" class="text-muted"><small >Category</small></span>
+                        <h4></h4>
+
+
+                        <span id="left" class="text-muted">{{ item.name }}</span>
+                        <span id="right"class="text-muted" > {{ item.category }}</span>
+
+                        <h4></h4>
+                        <h4></h4>
+
+                      <div class="card-footer text-muted" align="center">
+
                   <a href="{% url 'center:detail_product' item.id %}" >
                       <svg xmlns="http://www.w3.org/2000/svg"
                            width="16"
@@ -25,9 +43,13 @@
                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
                     </svg></a>
-                    </h1>
+
+                            </div>
               </div>
-        </article>
+        </div>
+                 </div>
+                 </div>
+
         {% endfor %}
 
         {% if is_paginated %}
