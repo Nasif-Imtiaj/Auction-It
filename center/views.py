@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView, CreateView , \
     UpdateView, DetailView, DeleteView, ListView, RedirectView
@@ -41,7 +41,7 @@ class AuctionTableDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'photos' : Images.objects.all(),
+            'photos' : Images.objects.filter(item=self.object.id),
             'bets': Bets.objects.filter(item=self.object.id)
         })
         return context
@@ -49,7 +49,7 @@ class AuctionTableDetailView(DetailView):
 
 class AuctionTableCreateView(LoginRequiredMixin, CreateView):
     template_name = 'center/create_product.html'
-    success_url = '/'
+    success_url = reverse_lazy('center:my_items')
     initial = {'key': 'value'}
     form_class = AuctionItemForm
 
@@ -63,7 +63,7 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
             # <process form cleaned data>
             form.save()
 
-            return HttpResponseRedirect('/success/')
+            return HttpResponseRedirect(reverse('center:my_items'))
 
         return render(request, self.template_name, {'form': form})
 
@@ -78,7 +78,7 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
 
 class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = AuctionItemForm
-    model = auction_table
+    model = AuctionItem
     template_name = 'center/update_product.html'
     success_url = '/'
 
@@ -88,21 +88,23 @@ class AuctionTableUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView
 
     def test_func(self):
         item = self.get_object()
-        if self.request.user.username == item.owner_name:
+        if self.request.user.username == item.owner:
             return True
         return False
 
 
 
 class AuctionTableDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = auction_table
-    success_url = '/'
+    model = AuctionItem
+    success_url = reverse_lazy('center:my_items')
     template_name = 'center/product_confirm_delete.html'
     def test_func(self):
         item = self.get_object()
-        if self.request.user.username == item.owner_name:
+        if self.request.user == item.owner:
             return True
-        return False
+        return
+
+
 
 
 
@@ -122,13 +124,14 @@ class BettersCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.better = self.request.user
         form.instance.item = AuctionItem.objects.get(id=self.kwargs.get('pk'))
-        return super().form_valid(form)
+        form.save();
+        return redirect('center:detail_product',pk=self.kwargs.get('pk'))
 
 
 class AddPicCreateView(LoginRequiredMixin, CreateView):
     form_class = ImageForm
     template_name = 'center/add_pic.html'
-    success_url = '/'
+    success_url = 'center/detail_product'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -145,7 +148,7 @@ class AddPicCreateView(LoginRequiredMixin, CreateView):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(self.success_url)
+            return redirect('center:detail_product',pk=self.kwargs.get('pk'))
         else:
             return render(request, self.template_name, {'form': form})
 
