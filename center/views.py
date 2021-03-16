@@ -37,7 +37,8 @@ class OnAuctionListView(ListView):
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
     model = AuctionItem
-
+    initial = {'key': 'value'}
+    form_class = BettersForm
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
@@ -45,6 +46,8 @@ class AuctionTableDetailView(DetailView):
             'bets': Bets.objects.filter(item=self.object.id)
         })
         return context
+
+
 
 
 class AuctionTableCreateView(LoginRequiredMixin, CreateView):
@@ -126,6 +129,17 @@ class BettersCreateView(LoginRequiredMixin, CreateView):
         form.instance.item = AuctionItem.objects.get(id=self.kwargs.get('pk'))
         form.save();
         return redirect('center:detail_product',pk=self.kwargs.get('pk'))
+
+class BettersDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Bets
+    success_url = reverse_lazy('center:my_bets')
+    template_name = 'center/delete_bet_confirm.html'
+    def test_func(self):
+        item = self.get_object()
+        if self.request.user == item.better:
+            return True
+        return
+
 
 
 class AddPicCreateView(LoginRequiredMixin, CreateView):

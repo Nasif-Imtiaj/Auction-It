@@ -38,8 +38,10 @@
                           </div>
                               </div>
                      <hr>
+                    {%if object.owner == user %}
+                      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'center:add_pic' object.id %}">Add pic</a>
                       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'center:product_confirm_delete' object.id %}">Delete</a>
-
+                        {% endif %}
                  </div>
                         <div class="col-md-6">
                               <h5>{{object.name}}</h5>
@@ -68,10 +70,13 @@
                               </div>
                         </div>
             </div>
-                <hr>
-            <a  href="{% url 'center:add_pic' object.id %}">Add Pic</a>
-            <a  href="{% url 'center:betters' object.id %}">Bet</a>
+                <hr color="black">
 
+
+
+            <hr color="red" style="opacity:0" >
+            <hr color="red" style="opacity:0" >
+            <hr color="red" style="opacity:0" >
             {% for bet in bets %}
                 <article class="media content-section">
                     <img  src="{{ bet.better.profile.image.url }}" class="rounded-circle article-img">
@@ -85,16 +90,40 @@
                     </div>
 
 
-                    {% if bet.is_accepted %}
-                        <h2> Accepted </h2>
-                    {% else %}
-                        <h2><a class="article-title" href="{% url 'center:accept_deal' object.id bet.id %}">Accept</a></h2>
+                   {%if object.owner == user %}
+                       <a  class="btn btn-outline-success btn-sm-0 mt-5 mb-0"  href="{% url 'center:accept_deal' object.id bet.id %}">Accept</a>
+                    {% elif bet.better == user %}
+                       <a class="btn btn-danger btn-sm-0 mt-5 mb-0" href="{% url 'center:delete_bet_confirm' bet.id %}">Delete</a>
                     {% endif %}
                 </article>
             {% endfor %}
          {% endif %}
 
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Place You Bet</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            {{form}}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 
  {% endblock %}
@@ -102,6 +131,11 @@
     {% block extra_body %}
 <script>
     $('.carousel').carousel()
+</script>
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+  $('#myInput').trigger('focus')
+})
 </script>
 
     {% endblock %}
