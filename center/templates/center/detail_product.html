@@ -1,6 +1,19 @@
 {% extends 'center/base.html' %}
 {% block content %}
+<head>
 
+  <style>
+
+
+
+
+
+    .carousel {
+  width:100px;
+  height:200px;
+}
+  </style>
+</head>
         {% if object.is_sold %}
             <h2 align="center">The product has been sold</h2>
                 <p align="center">The auction has ended</p>
@@ -9,11 +22,7 @@
                  <div class="col-md-4">
                     <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="width: 200px ">
                             <!--Indicators-->
-                            <ol class="carousel-indicators">
-                            {% for p in photos %}
-                              <li data-target="#carousel-example-1z" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
-                            {% endfor %}
-                            </ol>
+
                             <!--/.Indicators-->
                             <!--Slides-->
                             <div class="carousel-inner" role="listbox">
@@ -37,6 +46,9 @@
                             <!--/.Controls-->
                           </div>
                        </div>
+                     <hr>
+                     <hr>
+                     <hr>
                      <hr>
                     {%if object.owner == user %}
                       <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'center:add_pic' object.id %}">Add pic</a>
