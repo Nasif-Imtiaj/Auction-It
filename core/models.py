@@ -60,9 +60,10 @@ class Images(models.Model):
         super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
-        output_size = (200, 200)
-        img.thumbnail(output_size)
-        img.save(self.image.path)
+        if img.height > 100 or img.width > 100:
+            output_size = (100, 100)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
 
 class Bets(models.Model):

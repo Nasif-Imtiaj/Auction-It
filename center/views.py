@@ -26,6 +26,7 @@ class OnAuctionListView(ListView):
         context = super().get_context_data(**kwargs)
         context.update({
             'on_auction_nav': 'active',
+            'photos': Images.objects.all(),
         })
         return context
 

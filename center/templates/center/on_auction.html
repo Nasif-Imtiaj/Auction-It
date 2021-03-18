@@ -2,77 +2,78 @@
 
     {% block content %}
 
-        {% for item in items %}
 
+                {% for it in items %}
+                    <div class="row p-2 bg-white border rounded mt-2">
+                <div class="col-md-3 mt-1">
+                     <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="width: 200px ">
+                            <!--Indicators-->
+                            <ol class="carousel-indicators">
+                            {% for p in photos %}
+                              <li data-target="#carousel-example-1z" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.counter0 == 0 %} active {% endif %}"></li>
+                            {% endfor %}
+                            </ol>
+                            <!--/.Indicators-->
+                            <!--Slides-->
+                            <div class="carousel-inner" role="listbox">
+                              {% for p in photos %}
+                                {% if p.item == it %}
+                                      <div class="carousel-item {% if forloop.counter0 == 0 %} active {% endif %}">
+                                        <img class="d-block w-100" src="{{p.image.url}}"
+                                          alt="First slide">
+                                      </div>
+                                {% endif %}
+                              {% endfor %}
+                              <!--/First slide-->
+                            <!--/.Slides-->
+                            <!--Controls-->
+                            <a class="carousel-control-prev" href="#carousel-example-1z" role="button" data-slide="prev">
+                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carousel-example-1z" role="button" data-slide="next">
+                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                              <span class="sr-only">Next</span>
+                            </a>
+                            <!--/.Controls-->
+                          </div>
+                       </div>
+                </div>
+                <div class="col-md-6 mt-1">
+                    <h4>{{it.name}}</h4>
 
-
-            <div class="media-body" align="center" bor>
-
-            <div class="card text-white bg-dark col-sm-6 mb-4" >
-                  <div class="card h-100">
-                    <div class="card-body">
-                        <div class="card-header">
-                    <img  src="{{ item.owner.profile.image.url }}" class="rounded-circle article-img">
-                  <a class="mr-2" href="{% url 'center:user_profile' item.owner.id %}">{{ item.owner }}</a>
-                  <small class="text-muted">{{ item.date_posted }}</small>
+                    <div class="d-flex flex-row">
+                        <p class="muted-text"> {{it.category}}</p>
                     </div>
+                    <div class="d-flex flex-row">
+                        <p class="muted-text"> {{it.location}}</p>
+                    </div>
+                    <p class="text-justify text-truncate para mb-0">{{it.description}}<br><br></p>
+                </div>
+                <div class="align-items-center align-content-center col-md-3 border-left mt-1">
+
+                    <h6 class="text-success">Free shipping</h6>
+                    <div class="d-flex flex-column mt-4">
+                        <a href="{% url 'center:detail_product' it.id %}" >
+                         <button class="btn btn-primary btn-sm" type="button">
+                            Details</button></a>
+                        <button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to wishlist</button></div>
+                </div>
+            </div>
 
 
 
-                        <span id="left" class="text-muted"><small >Product name</small></span>
-                        <span id="right" class="text-muted"><small >Category</small></span>
-                        <h4></h4>
+
+                 {% endfor %}
 
 
-                        <span id="left" class="text-muted">{{ item.name }}</span>
-                        <span id="right"class="text-muted" > {{ item.category }}</span>
 
-                        <h4></h4>
-                        <h4></h4>
 
-                      <div class="card-footer text-muted" align="center">
 
-                  <a href="{% url 'center:detail_product' item.id %}" >
-                      <svg xmlns="http://www.w3.org/2000/svg"
-                           width="16"
-                           height="16"
-                           fill="currentColor"
-                           class="bi bi-eye"
 
-                     viewBox="0 0 16 16">
-                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                    </svg></a>
 
-                            </div>
-              </div>
-        </div>
-                 </div>
-                 </div>
 
-        {% endfor %}
 
-        {% if is_paginated %}
-
-      {% if page_obj.has_previous %}
-        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-      {% endif %}
-
-      {% for num in page_obj.paginator.page_range %}
-        {% if page_obj.number == num %}
-          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
-        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
-        {% endif %}
-      {% endfor %}
-
-      {% if page_obj.has_next %}
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
-        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
-      {% endif %}
-
-    {% endif %}
 
 
 
