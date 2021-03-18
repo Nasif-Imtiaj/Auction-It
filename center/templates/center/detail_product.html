@@ -51,7 +51,31 @@
                      <hr>
                      <hr>
                     {%if object.owner == user %}
-                      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'center:add_pic' object.id %}">Add pic</a>
+                      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Upload your picture</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div> <form enctype="multipart/form-data" method="POST" action="{% url 'center:add_pic' object.id %}">
+                                  <div class="modal-body">
+                                            {% csrf_token %}
+                                            {{form2 }}
+                                  </div>
+                                  <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" >Upload</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                        </div>
+                <a  class="btn btn-secondary btn-sm mt-1 mb-1" data-toggle="modal" data-target="#exampleModal">
+                 Add pic
+                </a>
+
                       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'center:product_confirm_delete' object.id %}">Delete</a>
                         {% endif %}
                  </div>

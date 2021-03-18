@@ -41,13 +41,15 @@ class AuctionTableDetailView(DetailView):
     form_class= BettersForm
     initial = {'key': 'value'}
     form_class = BettersForm
+    form_class2 = ImageForm
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'photos' : Images.objects.filter(item=self.object.id),
             'bets': Bets.objects.filter(item=self.object.id),
-            'form': self.form_class()
+            'form': self.form_class(),
+            'form2': self.form_class2()
         })
         print(context, "context")
         return context
@@ -56,6 +58,14 @@ class AuctionTableDetailView(DetailView):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            return redirect('center:detail_product',pk=self.kwargs.get('pk'))
+        else:
+            return render(request, self.template_name, {'form': form})
+
+        form2 = self.form_class2(request.POST, request.FILES)
+        if form2.is_valid():
+            form2.instance.item = AuctionItem.objects.get(id=self.kwargs.get('pk'))
+            form2.save()
             return redirect('center:detail_product',pk=self.kwargs.get('pk'))
         else:
             return render(request, self.template_name, {'form': form})
@@ -77,6 +87,7 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             # <process form cleaned data>
+            form.instance.owner = self.request.user
             form.save()
 
             return HttpResponseRedirect(reverse('center:my_items'))
@@ -174,6 +185,7 @@ class AddPicCreateView(LoginRequiredMixin, CreateView):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         if form.is_valid():
+            form.instance.item =AuctionItem.objects.get(id=self.kwargs.get('pk'))
             form.save()
             return redirect('center:detail_product',pk=self.kwargs.get('pk'))
         else:
