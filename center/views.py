@@ -37,15 +37,27 @@ class OnAuctionListView(ListView):
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
     model = AuctionItem
+    form_class= BettersForm
     initial = {'key': 'value'}
     form_class = BettersForm
-    def get_context_data(self, **kwargs):
+
+    def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
             'photos' : Images.objects.filter(item=self.object.id),
-            'bets': Bets.objects.filter(item=self.object.id)
+            'bets': Bets.objects.filter(item=self.object.id),
+            'form': self.form_class()
         })
+        print(context, "context")
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('center:detail_product',pk=self.kwargs.get('pk'))
+        else:
+            return render(request, self.template_name, {'form': form})
 
 
 
