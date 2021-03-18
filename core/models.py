@@ -20,6 +20,8 @@ class auction_table(models.Model):
 class Category(models.Model):
     title = models.CharField(max_length=50)
     timestamp =  models.DateTimeField(default=datetime.now, blank=True)
+    description = models.TextField(default="none")
+    image = models.ImageField(default="default_cat", upload_to='Category_pics')
 
     def __str__(self):
         return self.title
