@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<head>
+    <style>
+
+table {
+    display: block;
+    overflow: auto;
+    height: 230px;
+}
+table {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+    </style>
+</head>
+<h2 align="Center" >List of Members</h2>
+        <table align="center"   class="table  table-sm table-striped table-hover table-bordered border-primary w-50 p-1">
+
+          <thead class="table-dark">
+            <tr >
+                <th  >#</th>
+                <th  >Name</th>
+
+            </tr>
+          </thead>
+
+            <tbody>
+                {% for member in members %}
+                 <tr>
+                    <td >{{forloop.counter}}</td>
+                    <td >{{member}} <a href="{% url 'center:user_profile' member.id%}">click</a></td>
+                    </tr>
+                    {% endfor %}
+
+            </tbody>
+
+
+        </table>
+
+
+
+{% endblock %}

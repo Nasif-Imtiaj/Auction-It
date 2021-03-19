@@ -1,5 +1,6 @@
+from django.contrib.auth.models import User
 from django.utils import timezone
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import TemplateView, CreateView, ListView
 
 from core.forms import ItemForm
 from core.models import Item, Category
@@ -23,6 +24,22 @@ class HomeTemplateView(TemplateView):
             'home_nav': 'active'
         })
         return context
+
+class MembersListView(ListView):
+    template_name = 'core/members.html'
+    model = User
+    context_object_name = 'members'
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'members_nav': 'active'
+
+        })
+        return context
+
+
+    paginate_by = 10
 
 
 class AboutTemplateView(TemplateView):
