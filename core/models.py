@@ -76,6 +76,20 @@ class Bets(models.Model):
         verbose_name = 'Bet'
         verbose_name_plural = 'Bets'
 
+class Follower(models.Model):
+    following = models.ForeignKey(User,related_name="following",on_delete=models.CASCADE)
+    followed_by = models.ForeignKey(User,related_name="followed_by",on_delete=models.CASCADE)
+    def __str__(self):
+        return self.followed_by.username
+
+class Review(models.Model):
+    reviewed_to = models.ForeignKey(User,related_name="reviewed_to",on_delete=models.CASCADE)
+    reviewed_by = models.ForeignKey(User,related_name="reviewed_by",on_delete=models.CASCADE)
+    text = models.TextField()
+    date_posted = models.DateTimeField(default=timezone.now)
+
+
+
 
 """
 items = self.request.user.auction_item_set.all()

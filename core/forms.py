@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.text import slugify
 
-from core.models import Item, auction_table, Category, AuctionItem, Bets, Images
+from core.models import Item, auction_table, Category, AuctionItem, Bets, Images, Follower, Review
 
 
 class ItemForm(forms.ModelForm):
@@ -36,3 +36,13 @@ class BettersForm(forms.ModelForm):
     class Meta:
         model = Bets
         fields = ['amount']
+
+class FollowerForm(forms.ModelForm):
+    class Meta:
+        model = Follower
+        fields = []
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = []

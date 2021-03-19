@@ -3,7 +3,7 @@ from django.urls import path
 from center.views import HomeTemplateView, OnAuctionListView, AuctionTableCreateView, AuctionTableUpdateView, \
     AuctionTableDetailView, AuctionTableDeleteView, UserItemsListView, BettersCreateView, UserBetsListView, \
     PofileDetailView, \
-    AcceptDealDetailView, AddPicCreateView, BettersDeleteView
+    AcceptDealDetailView, AddPicCreateView, BettersDeleteView, FollowersCreateView, FollowersListView
 
 app_name = 'center'
 
@@ -18,6 +18,8 @@ urlpatterns = [
     path('product/new/', AuctionTableCreateView.as_view(), name='create_product'),
     path('<int:pk>/bet/new/', BettersCreateView.as_view(), name='betters'),
     path('<int:pk>/pic/new/', AddPicCreateView.as_view(), name='add_pic'),
+    path('<int:pk>/follower/new/', FollowersCreateView.as_view(), name='create_follower'),
+    path('<int:pk>/follower/view/', FollowersListView.as_view(), name='followers_list'),
     path('<int:pk>/update/', AuctionTableUpdateView.as_view(), name='update_product'),
     path('<int:pk>/delete_item/', AuctionTableDeleteView.as_view(), name='product_confirm_delete'),
     path('<int:pk>/delete_bet/', BettersDeleteView.as_view(), name='delete_bet_confirm')

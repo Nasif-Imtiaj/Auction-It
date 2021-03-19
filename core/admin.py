@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from core.models import Item
+from core.models import Item, Follower, Review
 from core.models import auction_table, AuctionItem, Category, Bets, Images, Location
 
 @admin.register(Item)
@@ -29,3 +29,9 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', 'timestamp']
+@admin.register(Follower)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'following', 'followed_by']
+@admin.register(Review)
+class LocationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'reviewed_to', 'reviewed_by','text', 'date_posted']

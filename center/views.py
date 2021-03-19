@@ -9,8 +9,8 @@ from django.views.generic import TemplateView, CreateView , \
     UpdateView, DetailView, DeleteView, ListView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404, redirect
-from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm
-from core.models import auction_table, AuctionItem, Category, Bets, Images
+from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm, FollowerForm
+from core.models import auction_table, AuctionItem, Category, Bets, Images, Follower
 from django.contrib.auth.models import User
 # Create your views here.
 class HomeTemplateView(TemplateView):
@@ -237,7 +237,9 @@ class PofileDetailView(DetailView):
 
         context.update({
         'broughts' : Bets.objects.filter(better=self.kwargs.get('pk'), is_accepted=True),
-        'solds' : Bets.objects.filter(item__owner=self.kwargs.get('pk'), is_accepted=True)
+        'solds' : Bets.objects.filter(item__owner=self.kwargs.get('pk'), is_accepted=True),
+
+
         })
         return context
 
@@ -259,3 +261,38 @@ class AcceptDealDetailView(RedirectView):
         item.is_sold = True
         item.save()
 
+class FollowersCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'center/create_follower.html'
+    success_url = reverse_lazy('center:my_items')
+    initial = {'key': 'value'}
+    form_class = FollowerForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # <process form cleaned data>
+            form.instance.following = User.objects.get(id=self.kwargs.get('pk'))
+            form.instance.followed_by = self.request.user
+            form.save()
+
+            return HttpResponseRedirect(reverse('center:user_profile', kwargs={'pk': self.kwargs.get('pk')}))
+
+        return render(request, self.template_name, {'form': form})
+
+class FollowersListView(ListView):
+    template_name = 'center/followers_list.html'
+    model = Follower
+    context_object_name = 'followers'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'members_nav': 'active'
+
+        })
+        return context
+
+    paginate_by = 10

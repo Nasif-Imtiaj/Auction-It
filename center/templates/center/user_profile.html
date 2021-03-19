@@ -19,8 +19,14 @@
                     <div class="mt-3">
                       <h4>{{object.username}}</h4>
                       <p class="text-secondary mb-1">{{object.profile.bio}}</p>
-                      <button class="btn btn-primary">Follow</button>
-                      <button class="btn btn-outline-primary">Message</button>
+
+                        <form method="POST" action="{% url 'center:create_follower' object.id %}">
+                             {% csrf_token %}
+                             {{form}}
+                              <button class="btn btn-primary">Follow</button>
+                         </form>
+
+                        <a href="{% url 'center:followers_list' object.id %}"> <button class="btn btn-primary">Followers</button></a>
                     </div>
                   </div>
                 </div>
