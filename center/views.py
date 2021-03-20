@@ -9,8 +9,8 @@ from django.views.generic import TemplateView, CreateView , \
     UpdateView, DetailView, DeleteView, ListView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404, redirect
-from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm, FollowerForm
-from core.models import auction_table, AuctionItem, Category, Bets, Images, Follower
+from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm, FollowerForm, ReviewForm
+from core.models import auction_table, AuctionItem, Category, Bets, Images, Follower, Review
 from django.contrib.auth.models import User
 # Create your views here.
 class HomeTemplateView(TemplateView):
@@ -232,16 +232,19 @@ class PofileDetailView(DetailView):
     template_name = 'center/user_profile.html'
     model = User
     context_object_name = "v_user"
+    form_class = ReviewForm
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
         context.update({
         'broughts' : Bets.objects.filter(better=self.kwargs.get('pk'), is_accepted=True),
         'solds' : Bets.objects.filter(item__owner=self.kwargs.get('pk'), is_accepted=True),
-
-
+        'reviews' : Review.objects.all(),
+        'form2': self.form_class(),
         })
         return context
+
+
 
 
 class AcceptDealDetailView(RedirectView):
@@ -296,3 +299,24 @@ class FollowersListView(ListView):
         return context
 
     paginate_by = 10
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    template_name = 'center/create_review.html'
+    success_url = reverse_lazy('center:my_items')
+    initial = {'key': 'value'}
+    form_class = ReviewForm
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        return render(request, self.template_name, {'form': form})
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            # <process form cleaned data>
+            form.instance.reviewed_to = User.objects.get(id=self.kwargs.get('pk'))
+            form.instance.reviewed_by = self.request.user
+            form.save()
+
+            return HttpResponseRedirect(reverse('center:user_profile', kwargs={'pk': self.kwargs.get('pk')}))
+
+        return render(request, self.template_name, {'form': form})
