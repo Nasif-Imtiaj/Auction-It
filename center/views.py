@@ -30,7 +30,6 @@ class OnAuctionListView(ListView):
         })
         return context
 
-
     ordering = ['-date_posted']
     paginate_by = 5
 
@@ -240,11 +239,25 @@ class PofileDetailView(DetailView):
         'broughts' : Bets.objects.filter(better=self.kwargs.get('pk'), is_accepted=True),
         'solds' : Bets.objects.filter(item__owner=self.kwargs.get('pk'), is_accepted=True),
         'reviews' : Review.objects.filter(reviewed_to = self.kwargs.get('pk') ),
+        'followings' : Follower.objects.filter(followed_by = self.request.user ),
         'form2': self.form_class()
 
         })
         return context
 
+class ReviewListView(ListView):
+    template_name = 'center/user_profile.html'
+    model = Review
+    context_object_name = 'reviews'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+
+        })
+        return context
+
+    paginate_by = 10
 
 
 

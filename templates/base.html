@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
         <link href="https://unpkg.com/filepond/dist/filepond.css" rel="stylesheet" />
       <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     <meta charset="UTF-8">
@@ -15,7 +16,13 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="{% url 'core:home' %}">Auction</a>
+      <a class="navbar-brand" href="{% url 'core:home' %}">
+          <div class="row">
+               <img class="rounded-circle" src="{% static 'my_file/auction.png' %}" width="30" height="20" alt="Image">
+              <p style="font-style: italic;">Auction It</p>
+          </div>
+
+         </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -79,6 +86,7 @@
         </div>
            {% if user.is_authenticated %}
                     <div class="col-md-2" >
+
                       <div class="content-section"algin="right">
                         <h6 align="center">User Panel</h6>
 
