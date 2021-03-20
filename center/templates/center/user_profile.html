@@ -152,12 +152,16 @@
                     <div class="mt-3">
                       <h4>{{object.username}}</h4>
                       <p class="text-secondary mb-1">{{object.profile.bio}}</p>
+                         {% if is_follower %}
+                        <a href="{% url 'center:delete_follower_confirm' object.id %}">  <button class="btn btn-primary">Unfollow</button></a>
+                         {% else %}
+                                <form method="POST" action="{% url 'center:create_follower' object.id %}">
+                                     {% csrf_token %}
+                                     {{form}}
+                                      <button class="btn btn-primary">Follow</button>
+                                 </form>
+                          {% endif %}
 
-                        <form method="POST" action="{% url 'center:create_follower' object.id %}">
-                             {% csrf_token %}
-                             {{form}}
-                              <button class="btn btn-primary">Follow</button>
-                         </form>
 
                         <a href="{% url 'center:followers_list' object.id %}"> <button class="btn btn-primary">Followers</button></a>
                     </div>
@@ -251,14 +255,14 @@
           </div>
         </div>
 
-<section class="content-item" id="comments">
+<section class="content-item" id="comments" >
     <div class="container">
     	<div class="row">
             <div class="col-sm-8">
                 <form method="post" action="{% url 'center:create_review' object.id %}">
                     {% csrf_token %}
                 	<h3 class="pull-left">New Review</h3>
-                	<button type="submit" class="btn btn-normal pull-right">Submit</button>
+                	<button type="submit" class="btn btn-primary pull-right">Submit</button>
                     <fieldset>
                         <div class="row">
                             <div class="col-sm-3 col-lg-2 hidden-xs">
@@ -277,7 +281,8 @@
                 <div class="media">
                     <a class="pull-left" href="#"><img class="media-object" src="{{ review.reviewed_by.profile.image.url }}" alt=""></a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{review.reviewed_by}}</h4>
+                        <h4 class="media-heading">{{review.reviewed_by}}  <a class="btn btn-danger btn-sm-0 pull-right" href="{% url 'center:delete_review_confirm' review.id %}">Delete</a></h4>
+
                         <p>{{review.text}}</p>
                         <ul class="list-unstyled list-inline media-detail pull-left">
                             <li><i class="fa fa-calendar"></i>{{review.date_posted}}</li>

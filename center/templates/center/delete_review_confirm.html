@@ -1,0 +1,16 @@
+{% extends 'center/base.html' %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Delete Bet</legend>
+                <h2>Are you sure you want to delete review of "{{ object.reviewed_to }}"</h2>
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+                <a class="btn btn-outline-secondary" href="{% url 'center:user_profile' object.reviewed_to.id %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
