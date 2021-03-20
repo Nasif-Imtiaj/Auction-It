@@ -2,7 +2,7 @@
 
     {% block content %}
 <head>
-
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
   <style>
 
     .carousel {
@@ -39,12 +39,18 @@
                 </div>
                 <div class="col-md-6 mt-1">
                     <h4>{{it.name}}</h4>
+                    <br>
 
                     <div class="d-flex flex-row">
                         <p class="muted-text"> {{it.category}}</p>
                     </div>
                     <div class="d-flex flex-row">
-                        <p class="muted-text"> {{it.location}}</p>
+                         <ul class="list-unstyled list-inline media-detail pull-left">
+                            <li><i class="fa fa-location-arrow"></i>{{it.location}}</li>
+                            <li><i class="fa fa-calendar"></i> {{it.date_posted}}</li>
+                        </ul>
+
+
                     </div>
                     <p class="text-justify text-truncate para mb-0">{{it.description}}<br><br></p>
                 </div>
@@ -55,7 +61,7 @@
                         <a href="{% url 'center:detail_product' it.id %}" >
                          <button class="btn btn-primary btn-sm" type="button">
                             Details</button></a>
-                        <button class="btn btn-outline-primary btn-sm mt-2" type="button">Add to wishlist</button></div>
+                        </div>
                 </div>
             </div>
 
