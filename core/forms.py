@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.text import slugify
-
+import django_filters
 from core.models import Item, auction_table, Category, AuctionItem, Bets, Images, Follower, Review
 
 
@@ -46,3 +46,8 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ['text']
+
+class ProductFilter(django_filters.FilterSet):
+    class Meta:
+        model = AuctionItem
+        fields = ['category']

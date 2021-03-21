@@ -1,6 +1,6 @@
 from django.urls import path
 
-from core.views import HomeTemplateView, AboutTemplateView,  ItemCreateView, MembersListView
+from core.views import HomeTemplateView, AboutTemplateView, ItemCreateView, MembersListView
 
 app_name = 'core'
 

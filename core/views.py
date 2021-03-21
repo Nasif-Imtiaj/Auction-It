@@ -1,9 +1,10 @@
 from django.contrib.auth.models import User
+from django.shortcuts import render
 from django.utils import timezone
 from django.views.generic import TemplateView, CreateView, ListView
-
+from django.db.models import Q
 from core.forms import ItemForm
-from core.models import Item, Category
+from core.models import Item, Category, AuctionItem
 
 
 class UpdateActiveTimeMixin:
@@ -49,6 +50,7 @@ class AboutTemplateView(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'about_nav': 'active'
+
         })
         return context
 
@@ -60,3 +62,23 @@ class ItemCreateView(CreateView):
     form_class = ItemForm
     template_name = 'core/item_form.html'
     success_url = '/'
+
+
+def is_valid_queryparam(param):
+    return param != '' and param is not None
+
+def BootstrapFilterView(request):
+    qs = AuctionItem.objects.all()
+    title_contains_query = request.GET.get('title_contains')
+    category = request.GET.get('category')
+    if is_valid_queryparam(title_contains_query):
+        qs = qs.filter(name__icontains=title_contains_query)
+    if is_valid_queryparam(category) and category != 'Choose...':
+        qs = qs.filter(category=category)
+
+    context = {
+        'queryset': qs,
+        'categories': Category.objects.all()
+
+    }
+    return render(request, 'core/search.html', context)

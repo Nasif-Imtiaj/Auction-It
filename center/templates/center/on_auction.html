@@ -12,6 +12,9 @@
   </style>
 </head>
 
+            {% for obj in filter.qs %}
+                {{ obj.name }} - ${{ obj.price }}<br />
+            {% endfor %}
                 {% for it in items %}
                     <div class="row p-2 bg-white border rounded mt-2">
                         <div class="col-md-2 mt-0">

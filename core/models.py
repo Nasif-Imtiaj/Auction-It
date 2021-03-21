@@ -89,8 +89,6 @@ class Review(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
 
 
-
-
 """
 items = self.request.user.auction_item_set.all()
 Bets.objects.filter(item__in=items, is_accepted=True)

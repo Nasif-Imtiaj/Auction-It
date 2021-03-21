@@ -9,9 +9,11 @@ from django.views.generic import TemplateView, CreateView , \
     UpdateView, DetailView, DeleteView, ListView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, get_object_or_404, redirect
-from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm, FollowerForm, ReviewForm
+from core.forms import AuctionTableForm, AuctionItemForm, BettersForm, ImageForm, FollowerForm, ReviewForm, \
+    ProductFilter
 from core.models import auction_table, AuctionItem, Category, Bets, Images, Follower, Review
 from django.contrib.auth.models import User
+from django_filters.views import FilterView
 # Create your views here.
 class HomeTemplateView(TemplateView):
     template_name = 'center/home.html'
@@ -19,14 +21,14 @@ class HomeTemplateView(TemplateView):
 class OnAuctionListView(ListView):
     template_name = 'center/on_auction.html'
     model = AuctionItem
-
     context_object_name = 'items'
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
         context.update({
             'on_auction_nav': 'active',
-            'photos': Images.objects.all()
+            'photos': Images.objects.all(),
+
         })
         return context
 
