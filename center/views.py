@@ -244,13 +244,13 @@ class PofileDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['is_follower'] = self.object.following.filter(followed_by=self.request.user).exists()
+
         context.update({
         'broughts' : Bets.objects.filter(better=self.kwargs.get('pk'), is_accepted=True),
         'solds' : Bets.objects.filter(item__owner=self.kwargs.get('pk'), is_accepted=True),
         'reviews' : Review.objects.filter(reviewed_to = self.kwargs.get('pk') ),
-        'followings' : Follower.objects.filter(followed_by = self.request.user ),
+        'followers' : Follower.objects.filter(following= self.kwargs.get('pk'),followed_by = self.request.user ),
         'form2': self.form_class()
-
         })
         return context
 
@@ -311,10 +311,12 @@ class FollowersCreateView(LoginRequiredMixin, CreateView):
 class FollowersDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     template_name = 'center/delete_follower_confirm.html'
     model = Follower
-    success_url = reverse_lazy('center:my_bets')
+
+    def get_success_url(self, **kwargs):
+        item = self.get_object()
+        return reverse('center:user_profile', kwargs={'pk': item.following.id})
 
     def test_func(self):
-        item = Follower.get_object()
         if self.request.user == self.request.user:
             return True
         return False
