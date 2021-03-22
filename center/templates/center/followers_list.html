@@ -19,7 +19,10 @@ table {
 </head>
 <i class="icofont-crown"></i>
 <h2 align="Center" >List of Followers</h2>
-        <table align="center"   class="table  table-sm table-striped table-hover table-bordered border-primary w-50 p-1">
+        {% if not followers %}
+          <h2 align="center">No one is currently following.</h2>
+        {% else %}
+             <table align="center"   class="table  table-sm table-striped table-hover table-bordered border-primary w-50 p-1">
 
           <thead align="center" class="table-dark" >
             <tr >
@@ -42,12 +45,15 @@ table {
                        </svg></a></td>
                     </tr>
 
+
                     {% endfor %}
 
             </tbody>
 
 
         </table>
+        {% endif %}
+
 
 {% if is_paginated %}
 

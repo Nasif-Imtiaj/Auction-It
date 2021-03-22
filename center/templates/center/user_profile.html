@@ -268,7 +268,7 @@
                             <button type="submit" class="btn btn-primary pull-right">Submit</button>
                             <fieldset>
                                 <div class="row">
-                                    <div class="col-sm-3 col-lg-2 hidden-xs">
+                                    <div class="col-sm-4 col-lg-2 hidden-xs">
                                         <img class="img-responsive" src="{{ user.profile.image.url }}" alt="">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-9 col-lg-10">
@@ -281,19 +281,17 @@
             {% for review in reviews %}
                 <!-- COMMENT 1 - START -->
                 <div class="media">
-                    <a class="pull-left" href="#"><img class="media-object" src="{{ review.reviewed_by.profile.image.url }}" alt=""></a>
+                    <a class="pull-left" href="{{ review.reviewed_by.profile.image.url }}"><img class="media-object" src="{{ review.reviewed_by.profile.image.url }}" alt=""></a>
                     <div class="media-body">
-                        <h4 class="media-heading">{{review.reviewed_by}}  <a class="btn btn-danger btn-sm-0 pull-right" href="{% url 'center:delete_review_confirm' review.id %}">Delete</a></h4>
+                        <h5 class="media-heading"><a href="{% url 'center:user_profile' review.reviewed_by.id%}" >{{review.reviewed_by}}</a> </h5>
+                        <h5><a class="btn btn-danger btn-sm-0 pull-right" href="{% url 'center:delete_review_confirm' review.id %}">Delete</a></h5>
 
                         <p>{{review.text}}</p>
                         <ul class="list-unstyled list-inline media-detail pull-left">
                             <li><i class="fa fa-calendar"></i>{{review.date_posted}}</li>
-                            <li><i class="fa fa-thumbs-up"></i>13</li>
+
                         </ul>
-                        <ul class="list-unstyled list-inline media-detail pull-right">
-                            <li class=""><a href="">Like</a></li>
-                            <li class=""><a href="">Reply</a></li>
-                        </ul>
+
                     </div>
                 </div>
                 <!-- COMMENT 1 - END -->

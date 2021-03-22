@@ -338,6 +338,9 @@ class FollowersListView(ListView):
 
     paginate_by = 10
 
+    def get_queryset(self):
+            return super(FollowersListView, self).get_queryset().filter(following=self.kwargs['pk'])
+
 class ReviewCreateView(LoginRequiredMixin, CreateView):
     template_name = 'center/create_review.html'
     success_url = reverse_lazy('center:my_items')
