@@ -86,7 +86,7 @@ def BootstrapFilterView(request):
 
     context = {
         'queryset': qs,
-        'categories': Category.objects.all()
-
+        'categories': Category.objects.all(),
+        'search_nav': 'active'
     }
     return render(request, 'core/search.html', context)

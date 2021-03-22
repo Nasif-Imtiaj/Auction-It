@@ -33,8 +33,10 @@ class OnAuctionListView(ListView):
         return context
 
     ordering = ['-date_posted']
-    paginate_by = 5
+    paginate_by = 10
 
+    def get_queryset(self):
+        return AuctionItem.objects.filter(is_sold=False)
 
 class AuctionTableDetailView(DetailView):
     template_name = 'center/detail_product.html'
@@ -79,11 +81,15 @@ class AuctionTableCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('center:my_items')
     initial = {'key': 'value'}
     form_class = AuctionItemForm
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'form': self.form_class(),
+            'create_product_nav': 'active'
+        })
+        print(context, "context")
+        return context
 
-    def get(self, request, *args, **kwargs):
-
-        form = self.form_class(initial=self.initial)
-        return render(request, self.template_name, {'form': form})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -145,9 +151,7 @@ class BettersCreateView(LoginRequiredMixin, CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context.update({
-            'create_product_nav': 'active',
-        })
+
         return context
 
     def form_valid(self, form):
@@ -202,7 +206,7 @@ class UserItemsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'on_auction_nav': 'active'
+
 
         })
         return context
@@ -226,6 +230,9 @@ class UserBetsListView(ListView):
         return context
     ordering = ['-betted_time']
     paginate_by = 5
+
+    def get_queryset(self):
+        return Bets.objects.filter(better=self.request.user)
 
 
 
@@ -324,7 +331,7 @@ class FollowersListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'members_nav': 'active'
+
 
         })
         return context

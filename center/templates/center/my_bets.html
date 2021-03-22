@@ -1,8 +1,10 @@
 {% extends 'center/base.html' %}
 
     {% block content %}
+  <h6 class="mb-6">My Bids - {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h6>
+    <div class="container" >
          {% for bet in bets %}
-            <article class="media content-section">
+            <article  class="media content-section" style="width:50%">
                 <img  src="{{ bet.better.profile.image.url }}" class="rounded-circle article-img">
                 <div class="media-body">
                      <div class="article-metadata">
@@ -10,10 +12,10 @@
                      <small class="text-muted">{{ bet.betted_time }}</small>
                 </div>
                <h2><a class="article-title" href="#">{{ bet.category }}</a></h2>
-                <p class="article-content">Bet Amount : {{ bet.amount }}</p>
+                <p class="article-content">Bet Amount : {{ bet.amount }}<i class="fa fa-dollar"></i></p>
+               <p class="article-content">Item Name : {{ bet.item }}</p>
+                <a href="{% url 'center:detail_product' bet.item.id %}" > <h5 align="right"> View
 
-                 <h1 align="right">
-                  <a href="{% url 'center:detail_product' bet.item.id %}" >
                       <svg xmlns="http://www.w3.org/2000/svg"
                            width="16"
                            height="16"
@@ -23,11 +25,36 @@
                      viewBox="0 0 16 16">
                     <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
                     <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                    </svg></a>
-                    </h1>
+                    </svg>
+                    </h5></a>
                 </div>
 
             </article>
         {% endfor %}
+    </div>
+
+
+        {% if is_paginated %}
+
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+
+    {% endif %}
+
 
     {% endblock %}
