@@ -1,7 +1,7 @@
 {% extends 'center/base.html' %}
 {% block content %}
 <head>
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
   <style>
 
 
@@ -79,13 +79,38 @@
                       <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'center:product_confirm_delete' object.id %}">Delete</a>
                         {% endif %}
                  </div>
+
                         <div class="col-md-6">
-                              <h5>{{object.name}}</h5>
-                              <p class="mb-2 text-muted text-uppercase small">{{object.category}}</p>
+                            <div class="row">
+                                    <img class="rounded-circle" width="12%" src="{{ object.owner.profile.image.url }}" alt="">
+                                <div class="col">
+                                   <ul class="list-group">
+                                       <li style="list-style-type: none;">Owner <i class="fas fa-crown"></i></li>
+                                       <li style="list-style-type: none;"><a href="{% url 'center:user_profile' object.owner.id%}">{{object.owner}}</a></li>
+                                   </ul>
+                                </div>
+                                <br>
+                            </div>
+
+
+
                               <div class="table-responsive">
                                 <table class="table table-sm table-borderless mb-0">
+                                    <br>
+                                    <br>
                                   <tbody>
+                                  <tr>
+
+                                      <th class="pl-0 w-25" scope="row"><strong>Product name</strong></th>
+                                      <td><p class="pt-1">{{object.name}}</p></td>
+                                    </tr>
+                                  <tr>
+
+                                      <th class="pl-0 w-25" scope="row"><strong>Category</strong></th>
+                                      <td><p class="pt-1">{{object.category}}</p></td>
+                                    </tr>
                                     <tr>
+
                                       <th class="pl-0 w-25" scope="row"><strong>Description</strong></th>
                                       <td><p class="pt-1">{{object.description}}</p></td>
                                     </tr>
@@ -155,6 +180,11 @@
                        <a class="btn btn-danger btn-sm-0 mt-5 mb-0" href="{% url 'center:delete_bet_confirm' bet.id %}">Delete</a>
                     {% endif %}
                 </article>
+             {% empty %}
+                <td ><h2 align="center">No one betted yet.</h2>
+                 <br>
+                    <br>
+                </td>
             {% endfor %}
          {% endif %}
 
