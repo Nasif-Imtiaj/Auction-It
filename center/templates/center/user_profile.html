@@ -302,12 +302,14 @@
         {% endif %}
             {% for review in reviews %}
                 <!-- COMMENT 1 - START -->
+
                 <div class="media">
                     <a class="pull-left" href="{{ review.reviewed_by.profile.image.url }}"><img class="media-object" src="{{ review.reviewed_by.profile.image.url }}" alt=""></a>
                     <div class="media-body">
                         <h5 class="media-heading"><a href="{% url 'center:user_profile' review.reviewed_by.id%}" >{{review.reviewed_by}}</a> </h5>
+                        {% if user.username == review.reviewed_by.username %}
                         <h5><a class="btn btn-danger btn-sm-0 pull-right" href="{% url 'center:delete_review_confirm' review.id %}">Delete</a></h5>
-
+                            {% endif %}
                         <p>{{review.text}}</p>
                         <ul class="list-unstyled list-inline media-detail pull-left">
                             <li><i class="fa fa-calendar"></i>{{review.date_posted}}</li>
