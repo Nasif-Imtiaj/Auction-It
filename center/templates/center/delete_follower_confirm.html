@@ -8,7 +8,7 @@
                 <h2>Are you sure you want to Unfollow  "{{ object.following}}"</h2>
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+                <button class="btn btn-outline-danger" type="submit">Yes, Unfollow</button>
                 <a class="btn btn-outline-secondary" href="{% url 'center:user_profile' object.following.id %}">Cancel</a>
             </div>
         </form>

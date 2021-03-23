@@ -6,6 +6,19 @@
 </head>
         <h2 align="center">Welcome to search page</h2>
      <form method="GET" action=".">
+       <i class="fa fa-user" aria-hidden="true"></i>
+        <label for="category">Owner</label>
+        <div class="form-row">
+
+            <div class="form-group col-5">
+                <div class="input-group">
+                      <span class="input-group-append">
+                            <input class="form-control py-2 border-right-0 border" type="search" name="owner_contains" placeholder="Search by owner name" />
+
+                    </span>
+                </div>
+            </div>
+        </div>
          <i class="fa fa-product-hunt" aria-hidden="true"></i>
         <label for="category">Product name</label>
         <div class="form-row">
@@ -35,7 +48,7 @@
 
             <div class="form-group col-md-2 col-lg-2">
                 <i class="fa fa-calendar" aria-hidden="true"></i>
-                    <label for="publishedDate">Published date</label>
+                    <label for="publishedDate">Posted date</label>
                     <input type="date" class="form-control" id="publishedDate" name="published_Date">
                   </div>
           </div>

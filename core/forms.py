@@ -2,7 +2,7 @@ from django import forms
 from django.utils.text import slugify
 import django_filters
 from core.models import Item, auction_table, Category, AuctionItem, Bets, Images, Follower, Review
-
+from django.utils.translation import ugettext_lazy as _
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -19,6 +19,9 @@ class AuctionItemForm(forms.ModelForm):
     class Meta:
         model = AuctionItem
         fields = [ 'name', 'category', 'location', 'color', 'model', 'description']
+        labels = {
+            'name': _('Product Name'),
+        }
 
 def get_image_filename(instance, filename):
     title = instance.post.title

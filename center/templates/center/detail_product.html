@@ -14,10 +14,7 @@
 }
   </style>
 </head>
-        {% if object.is_sold %}
-            <h2 align="center">The product has been sold</h2>
-                <p align="center">The auction has ended</p>
-        {% else %}
+
             <div class="row">
                  <div class="col-md-4">
                     <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel" style="width: 200px ">
@@ -50,7 +47,7 @@
                      <hr>
                      <hr>
                      <hr>
-                    {%if object.owner == user %}
+                    {%if object.owner == user and object.is_sold == False %}
                       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -131,7 +128,18 @@
                               </div>
                         </div>
             </div>
-                <hr color="black">
+           <hr color="black">
+          {% if object.is_sold %}
+
+                    <br>
+                    <br>
+                    <br>
+                    <h2 align="center">The product has been sold</h2>
+                        <p align="center">The auction has ended</p>
+                    <br>
+                    <br>
+                    <br>
+        {% else %}
             {% if object.owner != user %}
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">

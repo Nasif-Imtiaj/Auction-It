@@ -70,17 +70,23 @@ def is_valid_queryparam(param):
 def BootstrapFilterView(request):
     qs = AuctionItem.objects.all()
     title_contains_query = request.GET.get('title_contains')
+    owner_contains_query = request.GET.get('owner_contains')
     category = request.GET.get('category')
     published_Date = request.GET.get('published_Date')
+
     if is_valid_queryparam(title_contains_query):
         qs = qs.filter(name__icontains=title_contains_query)
+
+    if is_valid_queryparam(owner_contains_query):
+        qs = qs.filter(owner__username__icontains=owner_contains_query)
+
     if is_valid_queryparam(category) and category != 'Choose...':
         qs = qs.filter(category=category)
+
     if is_valid_queryparam(published_Date):
         qs = qs.filter(date_posted__date=published_Date)
 
-    if is_valid_queryparam(category) and category != 'Choose...':
-        qs = qs.filter(categories__name=category)
+
 
 
 
